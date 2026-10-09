@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Arquitetura — Projetos</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;background:#050505;color:#fff}
+#intro{position:fixed;inset:0;background:#050505;z-index:9999;display:grid;place-items:center;animation:introOut .45s ease 4.55s forwards}
+#intro .intro-title{position:absolute;top:7%;left:50%;transform:translateX(-50%);width:94%;text-align:center;color:#fff;opacity:0;animation:titleIn .8s ease .2s forwards;z-index:5;line-height:1.05}
+#intro .intro-title strong{display:block;font-size:clamp(38px,9vw,70px);font-weight:900;letter-spacing:2px;text-shadow:0 3px 20px rgba(255,255,255,.25)}
+#intro .intro-title span{display:block;margin:10px auto 0;max-width:92%;font-size:clamp(15px,3.5vw,25px);font-weight:600;letter-spacing:.2px;line-height:1.25}
+#intro svg{width:min(94vw,900px);height:auto;max-height:72vh;display:block;margin:0 auto;}
+.guides{opacity:0;animation:guidesIn .7s ease .15s forwards}
+.floorplan .line1{stroke-dasharray:980;stroke-dashoffset:980;stroke-width:3;animation:trace 1.1s ease .25s forwards}
+.floorplan .line2{stroke-dasharray:920;stroke-dashoffset:920;stroke-width:1.8;animation:trace 1s ease .7s forwards}
+.floorplan .line3{stroke-dasharray:220;stroke-dashoffset:220;stroke-width:2.5;animation:trace .55s ease 1.55s forwards}
+.floorplan .line4{stroke-dasharray:190;stroke-dashoffset:190;stroke-width:2.5;animation:trace .5s ease 1.85s forwards}
+.floorplan .line5{stroke-dasharray:180;stroke-dashoffset:180;stroke-width:2.5;animation:trace .5s ease 2.1s forwards}
+.floorplan .line6{stroke-dasharray:100;stroke-dashoffset:100;stroke-width:2.5;animation:trace .4s ease 2.35s forwards}
+.floorplan .detail{stroke:#ccc;stroke-width:1.6;stroke-dasharray:180;stroke-dashoffset:180;animation:trace .65s ease 2.55s forwards}
+.floorplan .window{stroke:#aaa;stroke-width:2;stroke-dasharray:70;stroke-dashoffset:70;animation:trace .45s ease 3s forwards}
+.floorplan .furniture{opacity:0;animation:fadeIn .65s ease 3.35s forwards}
+.pencil{animation:pencilPlan 4.1s cubic-bezier(.55,.05,.35,1) forwards}
+@keyframes trace{to{stroke-dashoffset:0}}
+@keyframes guidesIn{to{opacity:.16}}
+@keyframes fadeIn{to{opacity:1}}
+@keyframes pencilPlan{
+0%{opacity:0;transform:translate(105px,105px) rotate(0deg)}
+8%{opacity:1}
+25%{transform:translate(495px,105px) rotate(0deg)}
+45%{transform:translate(495px,350px) rotate(90deg)}
+62%{transform:translate(300px,350px) rotate(180deg)}
+76%{transform:translate(300px,120px) rotate(-90deg)}
+88%{transform:translate(120px,230px) rotate(180deg)}
+100%{opacity:0;transform:translate(480px,335px) rotate(0deg)}
+}
+@keyframes titleIn{
+0%{opacity:0;transform:translate(-50%,-8px)}
+100%{opacity:1;transform:translate(-50%,0)}
+}
+@keyframes introOut{to{opacity:0;visibility:hidden;pointer-events:none}}
+main{min-height:100vh}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;position:relative}
+.logo{position:absolute;top:28px;left:28px;font-size:12px;letter-spacing:4px;font-weight:700}
+.hero h1{font-size:clamp(32px,7vw,78px);font-weight:300;letter-spacing:7px;margin-bottom:18px}
+.hero p{font-size:13px;letter-spacing:3px;color:#aaa;margin-bottom:42px;text-transform:uppercase}
+.order{display:inline-block;text-decoration:none;color:#000;background:#fff;border:1px solid #fff;padding:17px 34px;font-size:12px;font-weight:700;letter-spacing:2px;transition:.25s}
+.order:hover{background:#050505;color:#fff}
+.scroll{position:absolute;bottom:28px;font-size:10px;letter-spacing:3px;color:#777}
+.gallery{background:#fff;color:#080808;padding:90px 5vw 110px}
+.galleryHead{max-width:1100px;margin:0 auto 45px}
+.galleryHead span{font-size:10px;letter-spacing:4px;color:#777}
+.galleryHead h2{font-size:clamp(30px,5vw,52px);font-weight:300;margin-top:12px}
+.grid{max-width:1300px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:#111;overflow:hidden;aspect-ratio:4/3;position:relative}
+.card img{width:100%;height:100%;display:block;object-fit:cover;pointer-events:none;user-select:none}
+.card:after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.12);pointer-events:none}
+footer{text-align:center;background:#050505;color:#777;padding:35px;font-size:10px;letter-spacing:3px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.gallery{padding:65px 14px 80px}.logo{left:18px}}
+@media(max-width:480px){.grid{grid-template-columns:1fr}.hero h1{letter-spacing:4px}}
+
+
+
+/* Carregamento das opções do menu */
+.page-loader{position:fixed;inset:0;z-index:20000;background:rgba(5,5,5,.98);color:#fff;display:none;place-items:center;text-align:center;padding:24px}
+.page-loader.active{display:grid}
+.page-loader-inner{display:flex;flex-direction:column;align-items:center;gap:17px}
+.page-loader-spinner{width:42px;height:42px;border:3px solid #444;border-top-color:#fff;border-radius:50%;animation:forma3dSpin .8s linear infinite}
+.page-loader-text{font:600 13px Arial,Helvetica,sans-serif;letter-spacing:2px;text-transform:uppercase}
+.page-loader-subtext{font:12px Arial,Helvetica,sans-serif;color:#aaa;letter-spacing:.5px}
+@keyframes forma3dSpin{to{transform:rotate(360deg)}}
+/* O menu só fica visível depois da animação inicial de 5 segundos */
+.site-menu{visibility:hidden;opacity:0;animation:forma3dMenuReveal .25s ease 5s forwards}
+@keyframes forma3dMenuReveal{to{visibility:visible;opacity:1}}
+@media(prefers-reduced-motion:reduce){.page-loader-spinner{animation-duration:2s}}
+
+/* Menu principal Forma3D */
+.site-menu{position:fixed;top:20px;right:22px;z-index:10000}
+.menu-toggle{width:48px;height:48px;border:1px solid rgba(255,255,255,.45);border-radius:3px;background:#050505;color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;cursor:pointer}
+.menu-toggle span{display:block;width:22px;height:2px;background:#fff;transition:transform .2s,opacity .2s}
+.menu-toggle[aria-expanded="true"] span:first-child{transform:translateY(4px) rotate(45deg)}
+.menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.menu-toggle[aria-expanded="true"] span:last-child{transform:translateY(-12px) rotate(-45deg)}
+.menu-panel{position:absolute;top:58px;right:0;width:min(290px,calc(100vw - 32px));padding:12px;background:#080808;border:1px solid #333;box-shadow:0 12px 35px rgba(0,0,0,.4);display:none}
+.menu-panel.open{display:block}
+.menu-panel a,.menu-panel button{display:block;width:100%;padding:15px 13px;text-align:left;text-decoration:none;color:#fff;background:transparent;border:0;border-bottom:1px solid #252525;font:600 12px Arial,Helvetica,sans-serif;letter-spacing:1px;cursor:pointer}
+.menu-panel a:last-child,.menu-panel button:last-child{border-bottom:0}
+.menu-panel a:hover,.menu-panel button:hover{background:#202020}
+@media(max-width:480px){.site-menu{top:14px;right:14px}.menu-toggle{width:44px;height:44px}}
+
+.menu-info[hidden]{display:none}
+.menu-info{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.78);display:grid;place-items:center;padding:20px}
+.menu-info-card{position:relative;width:min(480px,100%);background:#fff;color:#111;padding:34px 26px;border-radius:4px}
+.menu-info-card h2{font-size:clamp(24px,5vw,34px);margin:0 28px 14px 0}
+.menu-info-card p{font-size:16px;line-height:1.6;color:#444}
+.menu-info-close{position:absolute;right:12px;top:8px;background:none;border:0;font-size:30px;cursor:pointer;color:#111}
+
+/* Página de encomenda */
+#orderPage{display:none;min-height:100vh;background:#fff;color:#111;padding:34px 18px 60px}
+.order-wrap{width:min(720px,100%);margin:0 auto}
+.order-back{display:inline-flex;align-items:center;gap:8px;background:#111;color:#fff;border:0;padding:11px 16px;border-radius:8px;cursor:pointer;font-weight:700;margin-bottom:28px}
+.order-title{font-size:clamp(30px,7vw,52px);line-height:1.02;margin:0 0 10px;font-weight:900;letter-spacing:-1px}
+.order-subtitle{margin:0 0 28px;color:#555;font-size:17px}
+.order-form{display:grid;gap:16px}
+.order-field label{display:block;font-weight:800;margin-bottom:7px}
+.order-field input,.order-field select,.order-field textarea{width:100%;box-sizing:border-box;border:1.5px solid #bbb;border-radius:10px;padding:14px 15px;font:inherit;background:#fff;color:#111;outline:none}
+.order-field input:focus,.order-field select:focus,.order-field textarea:focus{border-color:#111}
+.order-field textarea{min-height:130px;resize:vertical}
+.order-submit{width:100%;border:0;border-radius:10px;padding:16px;background:#111;color:#fff;font-size:17px;font-weight:900;cursor:pointer;margin-top:6px}
+.order-note{font-size:13px;color:#666;margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="page-loader" id="pageLoader" role="status" aria-live="polite" aria-hidden="true">
+  <div class="page-loader-inner">
+    <div class="page-loader-spinner" aria-hidden="true"></div>
+    <div class="page-loader-text" id="pageLoaderText">A carregar informação...</div>
+    <div class="page-loader-subtext">Forma3D · Aguarde um momento</div>
+  </div>
+</div>
+
+
+<div id="intro" aria-hidden="true">
+<div class="intro-title"><strong>Forma3D</strong><span>Projetos que dão forma aos seus sonhos.</span></div>
+<svg viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141414"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".3" stop-color="#888"/>
+      <stop offset=".55" stop-color="#eee"/>
+      <stop offset="1" stop-color="#555"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="420" fill="url(#paper)"/>
+
+  <!-- faint blueprint guides -->
+  <g class="guides" fill="none" stroke="#777" stroke-width="1">
+    <path d="M105 75 V365 M495 75 V365 M70 110 H530 M70 350 H530"/>
+    <path d="M105 95 H495 M105 330 H495"/>
+  </g>
+
+  <!-- realistic architectural floor plan -->
+  <g class="floorplan" fill="none" stroke="#f4f4f4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- outer walls -->
+    <path class="line1" d="M105 105 H495 V350 H105 Z"/>
+    <path class="line2" d="M120 120 H480 V335 H120 Z"/>
+
+    <!-- internal walls -->
+    <path class="line3" d="M300 120 V335"/>
+    <path class="line4" d="M120 230 H300"/>
+    <path class="line5" d="M300 245 H480"/>
+    <path class="line6" d="M390 245 V335"/>
+
+    <!-- door openings / arcs -->
+    <path class="detail" d="M300 205 A35 35 0 0 1 335 240"/>
+    <path class="detail" d="M390 245 A32 32 0 0 0 358 277"/>
+    <path class="detail" d="M120 230 A32 32 0 0 1 152 262"/>
+
+    <!-- doors -->
+    <path class="detail" d="M300 205 H335"/>
+    <path class="detail" d="M390 277 H358"/>
+    <path class="detail" d="M152 230 H120"/>
+
+    <!-- windows -->
+    <path class="window" d="M175 105 V120 M215 105 V120"/>
+    <path class="window" d="M385 105 V120 M425 105 V120"/>
+    <path class="window" d="M105 280 H120 M105 315 H120"/>
+    <path class="window" d="M480 280 H495 M480 315 H495"/>
+
+    <!-- furniture / architectural details -->
+    <g class="furniture" stroke="#999" stroke-width="1.5">
+      <rect x="160" y="145" width="90" height="45" rx="3"/>
+      <rect x="165" y="150" width="80" height="35" rx="2"/>
+      <circle cx="205" cy="210" r="18"/>
+      <rect x="330" y="145" width="115" height="48" rx="2"/>
+      <rect x="345" y="285" width="30" height="35"/>
+      <rect x="405" y="285" width="35" height="35"/>
+    </g>
+  </g>
+
+  <!-- small realistic pencil -->
+  <g class="pencil">
+    <polygon points="0,0 9,-7 65,-63 57,-55" fill="url(#metal)" stroke="#aaa" stroke-width="1"/>
+    <polygon points="0,0 -11,8 9,-7" fill="#ddd" stroke="#999" stroke-width="1"/>
+    <polygon points="-11,8 -7,1 -4,5" fill="#151515"/>
+    <line x1="9" y1="-3" x2="62" y2="-59" stroke="#fff" stroke-width="1" opacity=".8"/>
+  </g>
+</svg>
+</div>
+
+<main>
+<nav class="site-menu" aria-label="Menu principal">
+  <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menuPanel">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="menu-panel" id="menuPanel">
+    <a href="#inicio" data-menu-close>Início</a>
+    <button type="button" data-open-order>Encomendar Projeto</button>
+    <a href="#como-funciona" data-info="como" data-menu-close>Como Funciona</a>
+    <a href="#sobre-forma3d" data-info="sobre" data-menu-close>Sobre a Forma3D</a>
+    <a href="#contactos" data-info="contactos" data-menu-close>Contactos</a>
+  </div>
+</nav>
+<section class="hero" id="inicio">
+  <div class="logo">STUDIO / ARQ</div>
+  <h1>PROJETO<br>DO SEU ESPAÇO</h1>
+  <p>Consultoria e projetos arquitetónicos</p>
+  <a class="order" href="#encomendar" role="button">ENCOMENDAR PROJETO</a>
+  <div class="scroll">ROLE PARA VER PROJETOS ↓</div>
+</section>
+
+<section class="gallery" id="projetos">
+  <div class="galleryHead">
+    <span>PORTFÓLIO</span>
+    <h2>Projetos em destaque</h2>
+  </div>
+  <div class="grid"><article class="card"><img src="https://rerender.s3-accelerate.amazonaws.com/blog/body/c696178d-aa88-400d-8c3a-c8c77505dcee.jpg" alt="Apartamentos contemporâneos" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://media.licdn.com/dms/image/v2/C4D1BAQHhnaA7h3BfbA/company-background_10000/company-background_10000/0/1585564208035/lp_visual_cover?e=2147483647&t=sTk-a2U15iRt7mwaoPAXqsx-bmAikxrEi6EJjmWVx78&v=beta" alt="Villa moderna com piscina" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://storage.googleapis.com/gatnngpcwncgfrlshkqyfunthblog/modern-house-exterior-render.html" alt="Casa contemporânea" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://alliancemedialabs.com/images/services/3d-renders-isometrics/4.jpg" alt="Edifício residencial" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs_webp/ff191d243794249.698989a039cfe.jpg" alt="Villa de luxo" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://fiverr-res.cloudinary.com/images/t_main1%2Cq_auto%2Cf_auto%2Cq_auto%2Cf_auto/gigs2/435987735/original/65fb44541a14f4a04acd2459d021d97b733a9ad0/create-sketchup-3d-model-and-3d-rendering-of-your-building.jpg" alt="Casa moderna de dois pisos" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://coohom-biz-sg-s3.coohom.com/ins/static/case/modern-house-exterior-3d-render-1777916903677623800.jpg?processFlag=true&x-oss-process=image%2Fformat%2Cwebp" alt="Casa contemporânea minimalista" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://fiverr-res.cloudinary.com/images/t_main1%2Cq_auto%2Cf_auto%2Cq_auto%2Cf_auto/gigs/422004307/original/d8775248a6e5a178756c37d621be1c3cf22e768d/create-an-realistic-exterior-rendering.jpg" alt="Edifício residencial urbano" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://i.etsystatic.com/51907491/r/il/988e7e/7301499161/il_fullxfull.7301499161_4lof.jpg" alt="Villa com piscina" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://images.unsplash.com/photo-1706164971322-9053d534b3bc?auto=format&fit=crop&fm=jpg&q=85&w=1400" alt="Casa moderna" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://images.unsplash.com/photo-1686164748506-4311ba437c24?auto=format&fit=crop&fm=jpg&q=85&w=1400" alt="Casa de dois pisos" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://images.unsplash.com/photo-1723901832052-509aae2cbd8d?auto=format&fit=crop&fm=jpg&q=85&w=1400" alt="Casa em paisagem natural" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://images.unsplash.com/photo-1661716948701-295723b92616?auto=format&fit=crop&fm=jpg&q=85&w=1400" alt="Casa tropical" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://images.unsplash.com/photo-1686164748327-f659bf9cdba0?auto=format&fit=crop&fm=jpg&q=85&w=1400" alt="Casa contemporânea" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article>
+<article class="card"><img src="https://images.unsplash.com/photo-1784790652867-eea25c432ecb?auto=format&fit=crop&fm=jpg&q=85&w=1400" alt="Casa sustentável" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNjAwJz4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSdnJyB4MT0nMCcgeTE9JzAnIHgyPScwJyB5Mj0nMSc+PHN0b3Agc3RvcC1jb2xvcj0nI2Q5ZDlkOScvPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nIzc3NycvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzYwMCcgZmlsbD0nIzExMScvPgo8cmVjdCB5PSczOTAnIHdpZHRoPSc4MDAnIGhlaWdodD0nMjEwJyBmaWxsPScjMjIyJy8+CjxwYXRoIGQ9J00xNTUgMzkwVjI3MEw0MDAgMTIwbDI0NSAxNTB2MTIweicgZmlsbD0ndXJsKCNnKScvPgo8cGF0aCBkPSdNMTU1IDI3MGwyNDUtMTUwIDI0NSAxNTAtNzAgMzUtMTc1LTEwNS0xNzUgMTA1eicgZmlsbD0nI2VlZScvPgo8cmVjdCB4PSczNTAnIHk9JzMwMCcgd2lkdGg9JzEwMCcgaGVpZ2h0PSc5MCcgZmlsbD0nIzIyMicvPgo8cmVjdCB4PScyMTAnIHk9JzMwMCcgd2lkdGg9JzgwJyBoZWlnaHQ9JzU1JyBmaWxsPScjMzMzJy8+CjxyZWN0IHg9JzUxMCcgeT0nMzAwJyB3aWR0aD0nODAnIGhlaWdodD0nNTUnIGZpbGw9JyMzMzMnLz4KPHRleHQgeD0nNDAnIHk9JzU1JyBmaWxsPScjYWFhJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nMjInIGxldHRlci1zcGFjaW5nPSc1Jz5QUk9KRVRPIDNEPC90ZXh0Pgo8L3N2Zz4='"></article></div>
+</section>
+
+<section id="encomendar" style="background:#050505;color:#fff;min-height:55vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:80px 20px">
+  <div>
+    <div style="font-size:10px;letter-spacing:4px;color:#777;margin-bottom:18px">SEU PROJETO COMEÇA AQUI</div>
+    <h2 style="font-size:clamp(30px,6vw,60px);font-weight:300;margin-bottom:28px">Encomende o seu projeto.</h2>
+    <a class="order" href="#" onclick="return false">ENCOMENDAR PROJETO</a>
+  </div>
+</section>
+<footer id="contactos">STUDIO / ARQ — CONSULTORIA E PROJETOS ARQUITETÓNICOS</footer>
+</main>
+
+
+<div id="menuInfo" class="menu-info" role="dialog" aria-modal="true" aria-labelledby="menuInfoTitle" hidden>
+  <div class="menu-info-card">
+    <button type="button" id="closeMenuInfo" class="menu-info-close" aria-label="Fechar">×</button>
+    <h2 id="menuInfoTitle"></h2>
+    <p id="menuInfoText"></p>
+  </div>
+</div>
+
+<section id="orderPage">
+  <div class="order-wrap">
+    <button class="order-back" type="button" onclick="closeOrderPage()">← Voltar</button>
+    <h2 class="order-title">Encomendar projeto</h2>
+    <p class="order-subtitle">Preencha os dados abaixo. Ao enviar, o pedido será preparado para enviar pelo WhatsApp.</p>
+
+    <form class="order-form" id="orderForm">
+      <div class="order-field">
+        <label for="clientName">Nome</label>
+        <input id="clientName" name="clientName" type="text" placeholder="Seu nome" required>
+      </div>
+
+      <div class="order-field">
+        <label for="clientPhone">Telefone / WhatsApp</label>
+        <input id="clientPhone" name="clientPhone" type="tel" placeholder="Seu número" required>
+      </div>
+
+      <div class="order-field">
+        <label for="projectType">Tipo de projeto</label>
+        <select id="projectType" name="projectType" required>
+          <option value="">Selecione a categoria</option>
+          <option value="Casa T1">Casa T1</option>
+          <option value="Casa T2">Casa T2</option>
+          <option value="Casa T3">Casa T3</option>
+          <option value="Casa T4">Casa T4</option>
+          <option value="Condomínio">Condomínio</option>
+        </select>
+      </div>
+
+      <div class="order-field">
+        <label for="location">Localização do terreno</label>
+        <input id="location" name="location" type="text" placeholder="Bairro, cidade ou distrito" required>
+      </div>
+
+      <div class="order-field">
+        <label for="description">Como gostaria do projeto?</label>
+        <textarea id="description" name="description" placeholder="Ex.: número de quartos, pisos, garagem, sala, cozinha, etc." required></textarea>
+      </div>
+
+      <button class="order-submit" id="sendWhatsAppOrder" type="submit">ENVIAR PEDIDO PELO WHATSAPP</button>
+      <p class="order-note">Ao clicar, o WhatsApp será aberto com a mensagem do seu pedido.</p>
+    </form>
+  </div>
+</section>
+
+
+<script>
+"use strict";
+
+const WHATSAPP_NUMBER = "258876100397";
+
+window.forma3dShowLoader = function (message, callback) {
+  const overlay = document.getElementById("pageLoader");
+  const label = document.getElementById("pageLoaderText");
+  if (label) label.textContent = message || "A carregar informação...";
+  if (overlay) {
+    overlay.classList.add("active");
+    overlay.setAttribute("aria-hidden", "false");
+  }
+  window.setTimeout(function () {
+    if (overlay) {
+      overlay.classList.remove("active");
+      overlay.setAttribute("aria-hidden", "true");
+    }
+    if (typeof callback === "function") callback();
+  }, 850);
+};
+
+function openOrderPage() {
+  const intro = document.getElementById("intro");
+  const main = document.querySelector("main");
+  const orderPage = document.getElementById("orderPage");
+
+  if (intro) {
+    intro.style.display = "none";
+    intro.style.pointerEvents = "none";
+  }
+  if (main) main.style.display = "none";
+  if (orderPage) {
+    orderPage.style.display = "block";
+    orderPage.scrollIntoView({ behavior: "auto", block: "start" });
+  }
+}
+
+function closeOrderPage() {
+  const orderPage = document.getElementById("orderPage");
+  const main = document.querySelector("main");
+
+  if (orderPage) orderPage.style.display = "none";
+  if (main) main.style.display = "";
+  window.scrollTo(0, 0);
+}
+
+document.addEventListener("click", function (event) {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+
+  const orderLink = target.closest('a.order, button.order, a[href="#encomendar"]');
+  if (!orderLink) return;
+
+  // O botão decorativo do rodapé tem onclick="return false"; ainda assim
+  // deve abrir o formulário como os outros botões de encomenda.
+  event.preventDefault();
+  window.forma3dShowLoader("A preparar formulário de encomenda...", openOrderPage);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const pageLoader = document.getElementById("pageLoader");
+  const pageLoaderText = document.getElementById("pageLoaderText");
+
+  function showPageLoader(message, callback) {
+    if (pageLoaderText) pageLoaderText.textContent = message || "A carregar informação...";
+    if (pageLoader) {
+      pageLoader.classList.add("active");
+      pageLoader.setAttribute("aria-hidden", "false");
+    }
+    window.setTimeout(function () {
+      if (pageLoader) {
+        pageLoader.classList.remove("active");
+        pageLoader.setAttribute("aria-hidden", "true");
+      }
+      if (typeof callback === "function") callback();
+    }, 850);
+  }
+
+  const menuToggle = document.getElementById("menuToggle");
+  const menuPanel = document.getElementById("menuPanel");
+  const menuInfo = document.getElementById("menuInfo");
+  const menuInfoTitle = document.getElementById("menuInfoTitle");
+  const menuInfoText = document.getElementById("menuInfoText");
+
+  function closeMenu() {
+    if (menuPanel) menuPanel.classList.remove("open");
+    if (menuToggle) {
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "Abrir menu");
+    }
+  }
+
+  if (menuToggle && menuPanel) {
+    menuToggle.addEventListener("click", function () {
+      const isOpen = menuPanel.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.setAttribute("aria-label", isOpen ? "Fechar menu" : "Abrir menu");
+    });
+  }
+
+  document.querySelectorAll("[data-menu-close]").forEach(function (link) {
+    link.addEventListener("click", function (event) {
+      const infoType = link.getAttribute("data-info");
+      if (!infoType && link.getAttribute("href") === "#inicio") {
+        event.preventDefault();
+        closeMenu();
+        window.forma3dShowLoader("A preparar página inicial...", function () {
+          const orderPage = document.getElementById("orderPage");
+          const main = document.querySelector("main");
+          if (orderPage) orderPage.style.display = "none";
+          if (main) main.style.display = "";
+          window.scrollTo({ top: 0, behavior: "auto" });
+        });
+        return;
+      }
+      if (infoType) {
+        event.preventDefault();
+        let loadingMessage = "A carregar informação...";
+        if (infoType === "como") {
+          menuInfoTitle.textContent = "Como Funciona";
+          menuInfoText.textContent = "PASSO 1 — Faça a sua encomenda: escolha o tipo de projeto e preencha o formulário.\n\nPASSO 2 — Análise do pedido: a equipa analisa as informações enviadas.\n\nPASSO 3 — Desenvolvimento: os detalhes, o prazo e as condições são confirmados com o cliente.\n\nPASSO 4 — Entrega: o projeto é preparado para entrega depois da confirmação das condições acordadas.";
+        } else if (infoType === "sobre") {
+          loadingMessage = "A carregar informação sobre a Forma3D...";
+          menuInfoTitle.textContent = "Sobre a Forma3D";
+          menuInfoText.textContent = "A Forma3D dedica-se a transformar ideias em projetos arquitetónicos, considerando as necessidades e preferências de cada cliente. Valorizamos criatividade, responsabilidade, organização e atenção aos detalhes.";
+        } else {
+          loadingMessage = "A carregar contactos...";
+          menuInfoTitle.textContent = "Contactos";
+          menuInfoText.textContent = "Para esclarecer dúvidas ou solicitar um projeto, selecione “Encomendar Projeto” e envie o seu pedido pelo WhatsApp. O número de destino não é apresentado no site.";
+        }
+        closeMenu();
+        window.forma3dShowLoader(loadingMessage, function () {
+          if (menuInfo) menuInfo.hidden = false;
+        });
+      }
+      closeMenu();
+    });
+  });
+
+  const orderMenuButton = document.querySelector("[data-open-order]");
+  if (orderMenuButton) {
+    orderMenuButton.addEventListener("click", function () {
+      closeMenu();
+      window.forma3dShowLoader("A preparar formulário de encomenda...", openOrderPage);
+    });
+  }
+
+  const closeMenuInfo = document.getElementById("closeMenuInfo");
+  if (closeMenuInfo && menuInfo) {
+    closeMenuInfo.addEventListener("click", function () { menuInfo.hidden = true; });
+    menuInfo.addEventListener("click", function (event) {
+      if (event.target === menuInfo) menuInfo.hidden = true;
+    });
+  }
+
+  const form = document.getElementById("orderForm");
+  if (!form) return;
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const name = document.getElementById("clientName").value.trim();
+    const phone = document.getElementById("clientPhone").value.trim();
+    const type = document.getElementById("projectType").value;
+    const location = document.getElementById("location").value.trim();
+    const description = document.getElementById("description").value.trim();
+
+    if (!name || !phone || !type || !location || !description) {
+      alert("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    const message = [
+      "Olá, gostaria de encomendar um projeto arquitetónico.",
+      "",
+      "Nome: " + name,
+      "Telefone/WhatsApp: " + phone,
+      "Tipo de projeto: " + type,
+      "Localização: " + location,
+      "Descrição: " + description
+    ].join("\n");
+
+    const whatsappUrl =
+      "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
+
+    window.location.assign(whatsappUrl);
+  });
+});
+</script>
+
+</body>
+</html>
